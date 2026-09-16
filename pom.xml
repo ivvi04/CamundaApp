@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ru.lakeevdan</groupId>
-    <artifactId>CamundaApp</artifactId>
+    <artifactId>camunda-app</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>CamundaApp</name>
     <description>CamundaApp</description>
