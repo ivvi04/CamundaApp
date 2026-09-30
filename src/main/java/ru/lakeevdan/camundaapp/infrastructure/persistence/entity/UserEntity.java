@@ -20,10 +20,14 @@ public class UserEntity {
     private Long id;
 
     /** ФИО пользователя. */
-    @Column(nullable = false, columnDefinition = "text")
+    @Column(nullable = false)
     private String fio;
 
     /** Дата рождения. */
     @Column(nullable = false)
     private LocalDate birthday;
+
+    /** Email пользователя. */
+    @Column(nullable = false)
+    private String email;
 }

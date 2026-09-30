@@ -1,12 +1,7 @@
 package ru.lakeevdan.camundaapp.domain.entity.ticket;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import ru.lakeevdan.camundaapp.domain.entity.user.User;
-import ru.lakeevdan.camundaapp.domain.entity.user.UserName;
 
 import java.time.LocalDateTime;
 
@@ -14,14 +9,33 @@ import java.time.LocalDateTime;
  * Domain entity representing a ticket.
  */
 @Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class Ticket {
     private Long id;
-    private TicketName name;
-    private LocalDateTime createAt;
-    private String status;
-    private User user;
+    private final TicketName name;
+    private final LocalDateTime createAt;
+    private final String status;
+    private final User user;
+
+    private Ticket(TicketName name, LocalDateTime createAt, String status, User user) {
+        this.name = name;
+        this.createAt = createAt;
+        this.status = status;
+        this.user = user;
+    }
+
+    private Ticket(Long id, TicketName name, LocalDateTime createAt, String status, User user) {
+        this.id = id;
+        this.name = name;
+        this.createAt = createAt;
+        this.status = status;
+        this.user = user;
+    }
+
+    public static Ticket create(TicketName name, LocalDateTime createAt, String status, User user) {
+        return new Ticket(name, createAt, status, user);
+    }
+
+    public static Ticket restore(Long id, TicketName name, LocalDateTime createAt, String status, User user) {
+        return new Ticket(id, name, createAt, status, user);
+    }
 }
