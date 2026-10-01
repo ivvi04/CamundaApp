@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_1"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:process id="createTicketProcess" name="Создание тикета" isExecutable="true">
+
+    <!-- Переменные процесса -->
+    <bpmn:variable name="userId" type="string"/>
+    <bpmn:variable name="ticketName" type="string"/>
+    <bpmn:variable name="ticketDescription" type="string"/>
+    <bpmn:variable name="restResult" type="string"/>
+
+    <!-- Start Event -->
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_StartToUserTask</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <!-- User Task - ввод данных -->
+    <bpmn:userTask id="UserTask_CreateTicket" name="Ввод данных тикета">
+      <bpmn:incoming>Flow_StartToUserTask</bpmn:incoming>
+      <bpmn:outgoing>Flow_UserTaskToGateway</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <!-- Exclusive Gateway - проверка результата REST -->
+    <bpmn:exclusiveGateway id="Gateway_CheckResult" name="Проверка результата">
+      <bpmn:incoming>Flow_UserTaskToGateway</bpmn:incoming>
+      <bpmn:outgoing>Flow_OKToEnd</bpmn:outgoing>
+      <bpmn:outgoing>Flow_ERRORToUserTask</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <!-- Service Task - отправка по REST -->
+    <bpmn:serviceTask id="ServiceTask_SendTicket" name="Отправка тикета (REST)">
+      <bpmn:incoming>Flow_GatewayToServiceTask</bpmn:incoming>
+      <bpmn:outgoing>Flow_ServiceTaskToGateway</bpmn:outgoing>
+    </bpmn:serviceTask>
+
+    <!-- End Event - успех -->
+    <bpmn:endEvent id="EndEvent_Success" name="Тикет создан">
+      <bpmn:incoming>Flow_OKToEnd</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <!-- End Event - timeout/конец выполнения -->
+    <bpmn:endEvent id="EndEvent_Timeout" name="Timeout">
+      <bpmn:incoming>Flow_ErrorToTimeout</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <!-- Sequence Flows -->
+    <bpmn:sequenceFlow id="Flow_StartToUserTask" sourceRef="StartEvent_1" targetRef="UserTask_CreateTicket">
+      <bpmn:conditionExpression>${true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+
+    <!-- User Task -> Gateway -->
+    <bpmn:sequenceFlow id="Flow_UserTaskToGateway" sourceRef="UserTask_CreateTicket" targetRef="Gateway_CheckResult">
+      <bpmn:conditionExpression>${true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+
+    <!-- Gateway -> Service Task (если ERROR - retry) -->
+    <bpmn:sequenceFlow id="Flow_GatewayToServiceTask" sourceRef="Gateway_CheckResult" targetRef="ServiceTask_SendTicket">
+      <bpmn:conditionExpression>${restResult == 'ERROR'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+
+    <!-- Gateway -> End Event Success (если OK) -->
+    <bpmn:sequenceFlow id="Flow_OKToEnd" sourceRef="Gateway_CheckResult" targetRef="EndEvent_Success">
+      <bpmn:conditionExpression>${restResult == 'OK'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+
+    <!-- Service Task -> Gateway -->
+    <bpmn:sequenceFlow id="Flow_ServiceTaskToGateway" sourceRef="ServiceTask_SendTicket" targetRef="Gateway_CheckResult">
+      <bpmn:conditionExpression>${true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+
+    <!-- Gateway -> End Event Timeout -->
+    <bpmn:sequenceFlow id="Flow_ErrorToTimeout" sourceRef="Gateway_CheckResult" targetRef="EndEvent_Timeout">
+      <bpmn:conditionExpression>${true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+
+  </bpmn:process>
+
+</bpmn:definitions>

@@ -1,0 +1,36 @@
+{
+  "components": [
+    {
+      "label": "Name",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0avlsri",
+        "columns": null
+      },
+      "id": "Field_1fjjdsu",
+      "key": "ticketName",
+      "defaultValue": "ticket"
+    },
+    {
+      "label": "User ID",
+      "type": "number",
+      "layout": {
+        "row": "Row_0y87pkr",
+        "columns": null
+      },
+      "id": "Field_12yyix3",
+      "key": "userId",
+      "defaultValue": 1
+    }
+  ],
+  "type": "default",
+  "id": "ticketInputParamForm",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "versionTag": "latest",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.51.1"
+  },
+  "schemaVersion": 19
+}
