@@ -1,11 +1,8 @@
 package ru.lakeevda.camundaapp.domain.entity.ticket;
 
-import lombok.Getter;
-
 /**
  * Value object representing a name.
  */
-@Getter
 public final class TicketName {
     private final String value;
 
@@ -18,5 +15,9 @@ public final class TicketName {
             throw new IllegalArgumentException("Name must not be empty");
         }
         return new TicketName(value.trim());
+    }
+
+    public String getValue() {
+        return this.value;
     }
 }

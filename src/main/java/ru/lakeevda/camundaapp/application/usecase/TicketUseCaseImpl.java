@@ -22,6 +22,9 @@ public class TicketUseCaseImpl implements TicketUseCase {
 
     @Override
     public List<TicketParamResponse> getByUserId(Long userId) {
+        if (userId == null) {
+            throw new IllegalArgumentException("userId is null");
+        }
         return ticketRepository.findByUserId(userId)
                 .stream().map(TicketMapper::fromDomain)
                 .toList();
@@ -29,6 +32,9 @@ public class TicketUseCaseImpl implements TicketUseCase {
 
     @Override
     public TicketParamResponse create(TicketParamRequest param) {
+        if (param == null) {
+            throw new IllegalArgumentException("param is null");
+        }
         User user = userRepository.findById(param.userId())
                 .orElseThrow(EntityNotFoundException::new);
         Ticket ticket = ticketRepository.save(TicketMapper.toDomain(param, user));
@@ -37,6 +43,9 @@ public class TicketUseCaseImpl implements TicketUseCase {
 
     @Override
     public void delete(Long ticketId) {
+        if (ticketId == null) {
+            throw new IllegalArgumentException("ticketId is null");
+        }
         ticketRepository.delete(ticketId);
     }
 }

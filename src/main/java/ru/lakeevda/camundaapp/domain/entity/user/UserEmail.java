@@ -1,11 +1,8 @@
 package ru.lakeevda.camundaapp.domain.entity.user;
 
-import lombok.Getter;
-
 /**
  * Value object representing an email address.
  */
-@Getter
 public final class UserEmail {
     private final String value;
 
@@ -18,5 +15,9 @@ public final class UserEmail {
             throw new IllegalArgumentException("Invalid email format");
         }
         return new UserEmail(value.trim());
+    }
+
+    public String getValue() {
+        return this.value;
     }
 }

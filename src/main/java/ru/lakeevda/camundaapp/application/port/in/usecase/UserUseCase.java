@@ -4,7 +4,6 @@ import ru.lakeevda.camundaapp.application.dto.UserParamRequest;
 import ru.lakeevda.camundaapp.application.dto.UserParamResponse;
 
 public interface UserUseCase {
-    Long getIdByEmail(String email);
-
+    UserParamResponse getByEmail(String email);
     UserParamResponse create(UserParamRequest param);
 }

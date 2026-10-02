@@ -1,11 +1,8 @@
 package ru.lakeevda.camundaapp.domain.entity.user;
 
-import lombok.Getter;
-
 /**
  * Value object representing a user identifier.
  */
-@Getter
 public final class UserId {
     private final Long value;
 
@@ -18,5 +15,9 @@ public final class UserId {
             throw new IllegalArgumentException("User id must be positive");
         }
         return new UserId(value);
+    }
+
+    public Long getValue() {
+        return this.value;
     }
 }

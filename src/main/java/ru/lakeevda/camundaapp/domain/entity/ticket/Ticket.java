@@ -1,12 +1,10 @@
 package ru.lakeevda.camundaapp.domain.entity.ticket;
 
-import lombok.Getter;
 import ru.lakeevda.camundaapp.domain.entity.user.User;
 
 /**
  * Domain entity representing a ticket.
  */
-@Getter
 public class Ticket {
     private TicketId id;
     private final TicketName name;
@@ -43,5 +41,25 @@ public class Ticket {
         }
 
         return new Ticket(id, name, createAt, status, user);
+    }
+
+    public TicketId getId() {
+        return this.id;
+    }
+
+    public TicketName getName() {
+        return this.name;
+    }
+
+    public TicketCreateAt getCreateAt() {
+        return this.createAt;
+    }
+
+    public TicketStatus getStatus() {
+        return this.status;
+    }
+
+    public User getUser() {
+        return this.user;
     }
 }

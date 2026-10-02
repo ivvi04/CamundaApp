@@ -1,12 +1,10 @@
 package ru.lakeevda.camundaapp.domain.entity.user;
 
-import lombok.Getter;
 import java.time.LocalDate;
 
 /**
  * Value object representing a user's birthday.
  */
-@Getter
 public final class UserBirthday {
     private final LocalDate value;
 
@@ -19,5 +17,9 @@ public final class UserBirthday {
             throw new IllegalArgumentException("Birthday must not be null");
         }
         return new UserBirthday(value);
+    }
+
+    public LocalDate getValue() {
+        return this.value;
     }
 }

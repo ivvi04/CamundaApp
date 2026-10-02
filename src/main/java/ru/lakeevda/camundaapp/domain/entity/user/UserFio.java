@@ -1,11 +1,8 @@
 package ru.lakeevda.camundaapp.domain.entity.user;
 
-import lombok.Getter;
-
 /**
  * Value object representing a full name.
  */
-@Getter
 public final class UserFio {
     private final String value;
 
@@ -18,5 +15,9 @@ public final class UserFio {
             throw new IllegalArgumentException("Full name must not be empty");
         }
         return new UserFio(value.trim());
+    }
+
+    public String getValue() {
+        return this.value;
     }
 }

@@ -1,11 +1,8 @@
 package ru.lakeevda.camundaapp.domain.entity.user;
 
-import lombok.Getter;
-
 /**
  * Domain entity representing a user.
  */
-@Getter
 public class User {
     private UserId id;
     private final UserFio fio;
@@ -38,5 +35,21 @@ public class User {
             throw new IllegalArgumentException("User id or fio or birthday or email are null");
         }
         return new User(id, fio, birthday, email);
+    }
+
+    public UserId getId() {
+        return this.id;
+    }
+
+    public UserFio getFio() {
+        return this.fio;
+    }
+
+    public UserBirthday getBirthday() {
+        return this.birthday;
+    }
+
+    public UserEmail getEmail() {
+        return this.email;
     }
 }

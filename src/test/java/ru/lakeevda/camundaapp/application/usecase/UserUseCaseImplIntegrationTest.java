@@ -26,11 +26,13 @@ class UserUseCaseImplIntegrationTest {
         UserParamRequest paramRequest = new UserParamRequest("Ivan Ivanov", LocalDate.of(1990, 1, 1), "ivan@example.com");
 
         // When
-        UserParamResponse paramResponse = userUseCase.create(paramRequest);
-        Long result = userUseCase.getIdByEmail(email);
+        UserParamResponse createParamResponse = userUseCase.create(paramRequest);
+        UserParamResponse getParamResponse = userUseCase.getByEmail(email);
 
         // Then
-        assertEquals(paramResponse.id(), result);
+        assertNotNull(createParamResponse);
+        assertNotNull(getParamResponse);
+        assertEquals(createParamResponse.id(), getParamResponse.id());
     }
 
     @Test
@@ -39,7 +41,7 @@ class UserUseCaseImplIntegrationTest {
         String email = "unknown@example.com";
 
         // When / Then
-        assertThrows(EntityNotFoundException.class, () -> userUseCase.getIdByEmail(email));
+        assertThrows(EntityNotFoundException.class, () -> userUseCase.getByEmail(email));
     }
 
     @Test

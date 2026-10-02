@@ -1,11 +1,8 @@
 package ru.lakeevda.camundaapp.domain.entity.ticket;
 
-import lombok.Getter;
-
 /**
  * Value object representing a ticket identifier.
  */
-@Getter
 public final class TicketId {
     private final Long value;
 
@@ -18,5 +15,9 @@ public final class TicketId {
             throw new IllegalArgumentException("Ticket id must be positive");
         }
         return new TicketId(value);
+    }
+
+    public Long getValue() {
+        return this.value;
     }
 }

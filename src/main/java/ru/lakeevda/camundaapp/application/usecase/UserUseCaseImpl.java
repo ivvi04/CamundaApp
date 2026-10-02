@@ -20,15 +20,20 @@ public class UserUseCaseImpl implements UserUseCase {
     private final UserRepository userRepository;
 
     @Override
-    public Long getIdByEmail(String email) {
+    public UserParamResponse getByEmail(String email) {
+        if (email == null) {
+            throw new IllegalArgumentException("email is null");
+        }
         return userRepository.findByEmail(email)
-                .map(User::getId)
-                .orElseThrow(EntityNotFoundException::new)
-                .getValue();
+                .map(UserMapper::fromDomain)
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     @Override
     public UserParamResponse create(UserParamRequest param) {
+        if (param == null) {
+            throw new IllegalArgumentException("param is null");
+        }
         User user = User.create(
                 UserFio.of(param.fio()),
                 UserBirthday.of(param.birthday()),
