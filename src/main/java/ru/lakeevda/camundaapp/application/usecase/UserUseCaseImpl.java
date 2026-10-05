@@ -26,7 +26,8 @@ public class UserUseCaseImpl implements UserUseCase {
         }
         return userRepository.findByEmail(email)
                 .map(UserMapper::fromDomain)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() ->
+                        new EntityNotFoundException(String.format("user with email %s not found", email)));
     }
 
     @Override

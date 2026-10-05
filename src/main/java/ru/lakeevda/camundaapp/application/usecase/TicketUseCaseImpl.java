@@ -35,8 +35,8 @@ public class TicketUseCaseImpl implements TicketUseCase {
         if (param == null) {
             throw new IllegalArgumentException("param is null");
         }
-        User user = userRepository.findById(param.userId())
-                .orElseThrow(EntityNotFoundException::new);
+        User user = userRepository.findById(param.userId()).orElseThrow(() ->
+                new EntityNotFoundException(String.format("user with id %s not found", param.userId())));
         Ticket ticket = ticketRepository.save(TicketMapper.toDomain(param, user));
         return TicketMapper.fromDomain(ticket);
     }
