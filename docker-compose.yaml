@@ -1,6 +1,9 @@
 name: CamundaApp
 
 services:
+  # ──────────────────────────────────────────────
+  # PostgreSQL — хранилище для Camunda и приложения
+  # ──────────────────────────────────────────────
   postgres:
     image: 'postgres:18.6'
     container_name: 'camunda-postgres'
@@ -12,6 +15,7 @@ services:
     ports:
       - "5434:5432"
     volumes:
+      - postgres-data:/var/lib/postgresql
       - ./src/main/resources/db/changelog/baseline/init/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - camunda-net
@@ -22,20 +26,64 @@ services:
       retries: 5
       start_period: 30s
 
+  # ──────────────────────────────────────────────
+  # Camunda 8 Orchestration Cluster
+  # Единый контейнер: Zeebe + Operate + Tasklist + Identity + REST API
+  # ──────────────────────────────────────────────
+  orchestration:
+    image: camunda/camunda:8.9.19
+    container_name: camunda-orchestration
+    environment:
+      # Вторичное хранилище — PostgreSQL (вместо Elasticsearch)
+      CAMUNDA_DATA_SECONDARY_STORAGE_TYPE: rdbms
+      CAMUNDA_DATA_SECONDARY_STORAGE_RDBMS_DATABASEVENDORID: postgresql
+      CAMUNDA_DATA_SECONDARY_STORAGE_RDBMS_URL: "jdbc:postgresql://postgres:5432/camunda_db?currentSchema=camunda_app"
+      CAMUNDA_DATA_SECONDARY_STORAGE_RDBMS_USERNAME: postgres
+      CAMUNDA_DATA_SECONDARY_STORAGE_RDBMS_PASSWORD: postgres
+      CAMUNDA_DATA_SECONDARY_STORAGE_RDBMS_AUTO_DDL: "true"
+      # Базовая настройка для локальной разработки
+      CAMUNDA_SECURITY_AUTHENTICATION_UNPROTECTED_API: "true"
+    ports:
+      - "8082:8080"   # REST API + Operate + Tasklist + Identity
+      - "26500:26500" # gRPC для Zeebe-клиентов
+      - "9600:9600"   # Мониторинг/health
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - camunda-net
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "localhost", "26500" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
+  # ──────────────────────────────────────────────
+  # Ваше Spring Boot приложение (Zeebe-воркер)
+  # ──────────────────────────────────────────────
   camunda-app:
     image: camunda-app
     build:
       dockerfile: Dockerfile
     container_name: 'camunda-app'
     environment:
-      - "SPRING_PROFILES_ACTIVE=docker"
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/camunda_db?currentSchema=camunda_app
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
     ports:
       - 8080:8080
     depends_on:
+      orchestration:
+        condition: service_healthy
       postgres:
         condition: service_healthy
     networks:
       - camunda-net
+
+volumes:
+  postgres-data:
 
 networks:
   camunda-net:
