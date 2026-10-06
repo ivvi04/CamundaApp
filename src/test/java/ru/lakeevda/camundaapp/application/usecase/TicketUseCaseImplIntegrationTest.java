@@ -4,9 +4,12 @@ import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import ru.lakeevda.camundaapp.application.dto.TicketCreateUseCaseRequest;
 import ru.lakeevda.camundaapp.application.dto.TicketCreateUseCaseResponse;
 import ru.lakeevda.camundaapp.application.dto.TicketGetUseCaseResponse;
+import ru.lakeevda.camundaapp.application.dto.TicketStartProcessUseCaseResponse;
+import ru.lakeevda.camundaapp.application.port.out.process.CamundaProcess;
 import ru.lakeevda.camundaapp.domain.entity.ticket.TicketStatus;
 import ru.lakeevda.camundaapp.domain.entity.user.User;
 import ru.lakeevda.camundaapp.domain.entity.user.UserBirthday;
@@ -17,9 +20,13 @@ import ru.lakeevda.camundaapp.infrastructure.adapter.repository.UserRepositoryIm
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @Transactional
@@ -32,6 +39,8 @@ public class TicketUseCaseImplIntegrationTest {
     private UserRepositoryImpl userRepository;
     @Autowired
     private TicketUseCaseImpl ticketUseCase;
+    @MockitoBean
+    private CamundaProcess camundaProcess;
 
     @Test
     public void create_success() {
@@ -73,5 +82,23 @@ public class TicketUseCaseImplIntegrationTest {
     public void delete_success() {
         // When & Then
         ticketUseCase.delete(1L);
+    }
+
+    @Test
+    public void startProcess_success() {
+        // Given
+        User user = userRepository.save(
+                User.create(
+                        UserFio.of(USER_FIO),
+                        UserBirthday.of(LocalDate.now().minusYears(20)),
+                        UserEmail.of(USER_EMAIL)));
+        when(camundaProcess.startProcess(anyString(), anyMap())).thenReturn(Map.of("processInstanceKey", "processInstanceKey"));
+
+        // When
+        TicketStartProcessUseCaseResponse useCaseResponse = ticketUseCase.startProcess(user.getId().getValue());
+
+        // Then
+        assertNotNull(useCaseResponse);
+        assertEquals("processInstanceKey", useCaseResponse.processInstanceKey());
     }
 }

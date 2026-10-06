@@ -13,11 +13,17 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CamundaProcessImpl implements CamundaProcess {
 
+    private final Map<String, Object> MAIN_VARIABLES = Map.of(
+            "timeoutDuration", "PT1M"
+    );
+
     private final CamundaClient camundaClient;
 
     @Override
     public Map<String, Object> startProcess(String processId, Map<String, Object> variables) {
         log.info("Starting createTicketProcess: variables={}", variables);
+
+        variables.putAll(MAIN_VARIABLES);
 
         // Запуск экземпляра процесса
         var response = camundaClient
