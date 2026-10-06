@@ -15,11 +15,11 @@ public class TicketMapper {
         return entity;
     }
 
-    public static Ticket fromEntity(TicketEntity entity) {
+    public static Ticket toDomain(TicketEntity entity) {
         return Ticket.restore(TicketId.of(entity.getId()),
                 TicketName.of(entity.getName()),
                 TicketCreateAt.of(entity.getCreateAt()),
                 TicketStatus.fromValue(entity.getStatus()),
-                UserMapper.fromEntity(entity.getUser()));
+                UserMapper.toDomain(entity.getUser()));
     }
 }

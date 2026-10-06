@@ -4,8 +4,9 @@ import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import ru.lakeevda.camundaapp.application.dto.TicketParamRequest;
-import ru.lakeevda.camundaapp.application.dto.TicketParamResponse;
+import ru.lakeevda.camundaapp.application.dto.TicketCreateUseCaseRequest;
+import ru.lakeevda.camundaapp.application.dto.TicketCreateUseCaseResponse;
+import ru.lakeevda.camundaapp.application.dto.TicketGetUseCaseResponse;
 import ru.lakeevda.camundaapp.domain.entity.ticket.TicketStatus;
 import ru.lakeevda.camundaapp.domain.entity.user.User;
 import ru.lakeevda.camundaapp.domain.entity.user.UserBirthday;
@@ -40,11 +41,11 @@ public class TicketUseCaseImplIntegrationTest {
                         UserFio.of(USER_FIO),
                         UserBirthday.of(LocalDate.now().minusYears(20)),
                         UserEmail.of(USER_EMAIL)));
-        TicketParamRequest paramRequest = new TicketParamRequest(TICKET_NAME,
+        TicketCreateUseCaseRequest paramRequest = new TicketCreateUseCaseRequest(TICKET_NAME,
                 LocalDateTime.now(), TicketStatus.CREATED.getValue(), user.getId().getValue());
 
         // When
-        TicketParamResponse paramResponse = ticketUseCase.create(paramRequest);
+        TicketCreateUseCaseResponse paramResponse = ticketUseCase.create(paramRequest);
 
         // Then
         assertNotNull(paramResponse);
@@ -61,7 +62,7 @@ public class TicketUseCaseImplIntegrationTest {
         // Given
 
         // When
-        List<TicketParamResponse> paramResponses = ticketUseCase.getByUserId(999L);
+        List<TicketGetUseCaseResponse> paramResponses = ticketUseCase.getByUserId(999L);
 
         // Then
         assertNotNull(paramResponses);

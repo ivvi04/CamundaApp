@@ -3,8 +3,9 @@ package ru.lakeevda.camundaapp.application.usecase;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.lakeevda.camundaapp.application.dto.UserParamRequest;
-import ru.lakeevda.camundaapp.application.dto.UserParamResponse;
+import ru.lakeevda.camundaapp.application.dto.UserCreateUseCaseRequest;
+import ru.lakeevda.camundaapp.application.dto.UserCreateUseCaseResponse;
+import ru.lakeevda.camundaapp.application.dto.UserGetUseCaseResponse;
 import ru.lakeevda.camundaapp.application.mapper.UserMapper;
 import ru.lakeevda.camundaapp.application.port.in.usecase.UserUseCase;
 import ru.lakeevda.camundaapp.application.port.out.repository.UserRepository;
@@ -20,18 +21,18 @@ public class UserUseCaseImpl implements UserUseCase {
     private final UserRepository userRepository;
 
     @Override
-    public UserParamResponse getByEmail(String email) {
+    public UserGetUseCaseResponse getByEmail(String email) {
         if (email == null) {
             throw new IllegalArgumentException("email is null");
         }
         return userRepository.findByEmail(email)
-                .map(UserMapper::fromDomain)
+                .map(UserMapper::toGetResponse)
                 .orElseThrow(() ->
                         new EntityNotFoundException(String.format("user with email %s not found", email)));
     }
 
     @Override
-    public UserParamResponse create(UserParamRequest param) {
+    public UserCreateUseCaseResponse create(UserCreateUseCaseRequest param) {
         if (param == null) {
             throw new IllegalArgumentException("param is null");
         }
@@ -40,6 +41,6 @@ public class UserUseCaseImpl implements UserUseCase {
                 UserBirthday.of(param.birthday()),
                 UserEmail.of(param.email()));
 
-        return UserMapper.fromDomain(userRepository.save(user));
+        return UserMapper.toCreateResponse(userRepository.save(user));
     }
 }

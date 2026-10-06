@@ -19,7 +19,7 @@ public class TicketRepositoryImpl implements TicketRepository {
     @Override
     public List<Ticket> findByUserId(Long userId) {
         return jpaRepository.findAllByUserId(userId)
-                .stream().map(TicketMapper::fromEntity)
+                .stream().map(TicketMapper::toDomain)
                 .toList();
     }
 
@@ -27,7 +27,7 @@ public class TicketRepositoryImpl implements TicketRepository {
     @Transactional
     public Ticket save(Ticket ticket) {
         TicketEntity entity = jpaRepository.save(TicketMapper.toEntity(ticket));
-        return TicketMapper.fromEntity(entity);
+        return TicketMapper.toDomain(entity);
     }
 
     @Override

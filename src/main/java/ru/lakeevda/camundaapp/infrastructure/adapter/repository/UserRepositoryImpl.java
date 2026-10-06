@@ -20,18 +20,18 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public Optional<User> findById(Long userId) {
         return jpaRepository.findById(userId)
-                .map(UserMapper::fromEntity);
+                .map(UserMapper::toDomain);
     }
 
     @Override
     public Optional<User> findByEmail(String email) {
-        return jpaRepository.findByEmail(email).map(UserMapper::fromEntity);
+        return jpaRepository.findByEmail(email).map(UserMapper::toDomain);
     }
 
     @Override
     @Transactional
     public User save(User user) {
         UserEntity userEntity = jpaRepository.save(UserMapper.toEntity(user));
-        return UserMapper.fromEntity(userEntity);
+        return UserMapper.toDomain(userEntity);
     }
 }
