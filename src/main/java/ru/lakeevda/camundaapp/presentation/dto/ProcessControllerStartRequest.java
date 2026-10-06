@@ -10,5 +10,4 @@ public record ProcessControllerStartRequest(
 
         @NotNull(message = "variables is required")
         Map<String, Object> variables) {
-
 }

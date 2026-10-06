@@ -1,6 +1,7 @@
 package ru.lakeevda.camundaapp.presentation.rest.controller;
 
-import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,7 @@ public class TicketController {
     private final TicketUseCase useCase;
 
     @GetMapping
-    public List<TicketControllerGetResponse> getByUserId(@Valid @RequestParam Long userId) {
+    public List<TicketControllerGetResponse> getByUserId(@RequestParam @NotNull @Min(value = 1, message = "userId must be positive") Long userId) {
         return useCase.getByUserId(userId).stream()
                 .map(TicketMapper::toGetResponse)
                 .toList();

@@ -1,7 +1,7 @@
 package ru.lakeevda.camundaapp.presentation.dto;
 
-import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
@@ -11,7 +11,7 @@ public record UserControllerCreateRequest(
         String fio,
 
         @NotNull(message = "birthday is required")
-        @FutureOrPresent
+        @Past
         LocalDate birthday,
 
         @NotNull(message = "email is required")

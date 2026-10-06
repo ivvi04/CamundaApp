@@ -60,12 +60,13 @@ services:
       start_period: 40s
 
   # ──────────────────────────────────────────────
-  # Ваше Spring Boot приложение (Zeebe-воркер)
+  # Spring Boot приложение (Zeebe-воркер)
   # ──────────────────────────────────────────────
   camunda-app:
     image: camunda-app
     build:
       dockerfile: Dockerfile
+    pull_policy: never
     container_name: 'camunda-app'
     environment:
       - SPRING_PROFILES_ACTIVE=docker
