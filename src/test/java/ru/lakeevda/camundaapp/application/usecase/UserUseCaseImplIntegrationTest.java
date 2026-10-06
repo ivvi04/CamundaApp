@@ -5,9 +5,9 @@ import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import ru.lakeevda.camundaapp.application.dto.UserCreateUseCaseRequest;
-import ru.lakeevda.camundaapp.application.dto.UserCreateUseCaseResponse;
-import ru.lakeevda.camundaapp.application.dto.UserGetUseCaseResponse;
+import ru.lakeevda.camundaapp.application.dto.UserUseCaseCreateRequest;
+import ru.lakeevda.camundaapp.application.dto.UserUseCaseCreateResponse;
+import ru.lakeevda.camundaapp.application.dto.UserUseCaseGetResponse;
 
 import java.time.LocalDate;
 
@@ -24,11 +24,11 @@ class UserUseCaseImplIntegrationTest {
     void getIdByEmail_returnsUserId() {
         // Given
         String email = "ivan@example.com";
-        UserCreateUseCaseRequest paramRequest = new UserCreateUseCaseRequest("Ivan Ivanov", LocalDate.of(1990, 1, 1), "ivan@example.com");
+        UserUseCaseCreateRequest paramRequest = new UserUseCaseCreateRequest("Ivan Ivanov", LocalDate.of(1990, 1, 1), "ivan@example.com");
 
         // When
-        UserCreateUseCaseResponse createParamResponse = userUseCase.create(paramRequest);
-        UserGetUseCaseResponse getParamResponse = userUseCase.getByEmail(email);
+        UserUseCaseCreateResponse createParamResponse = userUseCase.create(paramRequest);
+        UserUseCaseGetResponse getParamResponse = userUseCase.getByEmail(email);
 
         // Then
         assertNotNull(createParamResponse);
@@ -48,10 +48,10 @@ class UserUseCaseImplIntegrationTest {
     @Test
     void create_savesUser() {
         // Given
-        UserCreateUseCaseRequest paramRequest = new UserCreateUseCaseRequest("Ivan Ivanov", LocalDate.of(1990, 1, 1), "ivan@example.com");
+        UserUseCaseCreateRequest paramRequest = new UserUseCaseCreateRequest("Ivan Ivanov", LocalDate.of(1990, 1, 1), "ivan@example.com");
 
         // When
-        UserCreateUseCaseResponse paramResponse = userUseCase.create(paramRequest);
+        UserUseCaseCreateResponse paramResponse = userUseCase.create(paramRequest);
 
         // Then
         assertNotNull(paramResponse);
@@ -64,7 +64,7 @@ class UserUseCaseImplIntegrationTest {
     @Test
     void create_throwsWhenFioIsNull() {
         // Given
-        UserCreateUseCaseRequest paramRequest = new UserCreateUseCaseRequest(null, LocalDate.of(1990, 1, 1), "ivan@example.com");
+        UserUseCaseCreateRequest paramRequest = new UserUseCaseCreateRequest(null, LocalDate.of(1990, 1, 1), "ivan@example.com");
 
         // When / Then
         assertThrows(IllegalArgumentException.class, () -> userUseCase.create(paramRequest));
@@ -73,7 +73,7 @@ class UserUseCaseImplIntegrationTest {
     @Test
     void create_throwsWhenBirthdayIsNull() {
         // Given
-        UserCreateUseCaseRequest paramRequest = new UserCreateUseCaseRequest("Ivan Ivanov", null, "ivan@example.com");
+        UserUseCaseCreateRequest paramRequest = new UserUseCaseCreateRequest("Ivan Ivanov", null, "ivan@example.com");
 
         // When / Then
         assertThrows(IllegalArgumentException.class, () -> userUseCase.create(paramRequest));
@@ -82,7 +82,7 @@ class UserUseCaseImplIntegrationTest {
     @Test
     void create_throwsWhenEmailIsNull() {
         // Given
-        UserCreateUseCaseRequest paramRequest = new UserCreateUseCaseRequest("Ivan Ivanov", LocalDate.of(1990, 1, 1), null);
+        UserUseCaseCreateRequest paramRequest = new UserUseCaseCreateRequest("Ivan Ivanov", LocalDate.of(1990, 1, 1), null);
 
         // When / Then
         assertThrows(IllegalArgumentException.class, () -> userUseCase.create(paramRequest));

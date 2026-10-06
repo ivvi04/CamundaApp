@@ -8,12 +8,12 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import ru.lakeevda.camundaapp.application.dto.TicketCreateUseCaseRequest;
-import ru.lakeevda.camundaapp.application.dto.TicketCreateUseCaseResponse;
+import ru.lakeevda.camundaapp.application.dto.TicketUseCaseCreateRequest;
+import ru.lakeevda.camundaapp.application.dto.TicketUseCaseCreateResponse;
 import ru.lakeevda.camundaapp.application.port.in.usecase.TicketUseCase;
 import ru.lakeevda.camundaapp.domain.entity.ticket.TicketStatus;
-import ru.lakeevda.camundaapp.infrastructure.dto.camunda.ticket.TicketCreateWorkerRequest;
-import ru.lakeevda.camundaapp.infrastructure.dto.camunda.ticket.TicketCreateWorkerResponse;
+import ru.lakeevda.camundaapp.infrastructure.dto.camunda.ticket.TicketWorkerCreateRequest;
+import ru.lakeevda.camundaapp.infrastructure.dto.camunda.ticket.TicketWorkerCreateResponse;
 
 import java.time.LocalDateTime;
 
@@ -27,16 +27,16 @@ public class TicketWorker {
     private final TicketUseCase useCase;
 
     @JobWorker(type = "ticketCreateJob")
-    public TicketCreateWorkerResponse create(@VariablesAsType TicketCreateWorkerRequest request) {
+    public TicketWorkerCreateResponse create(@VariablesAsType TicketWorkerCreateRequest request) {
         log.info("ticketCreateJob {} {}", request.ticketName(), request.userId());
-        TicketCreateUseCaseRequest paramRequest = new TicketCreateUseCaseRequest(
+        TicketUseCaseCreateRequest paramRequest = new TicketUseCaseCreateRequest(
                 request.ticketName(),
                 LocalDateTime.now(),
                 TicketStatus.CREATED.getValue(),
                 request.userId());
         try {
-            TicketCreateUseCaseResponse paramResponse = useCase.create(paramRequest);
-            return new TicketCreateWorkerResponse(paramResponse.id());
+            TicketUseCaseCreateResponse paramResponse = useCase.create(paramRequest);
+            return new TicketWorkerCreateResponse(paramResponse.id());
         } catch (EntityNotFoundException e) {
             log.warn("Throwing BpmnError BUSINESS_ERROR: {}", e.getMessage());
             throw new BpmnError("BUSINESS_ERROR", e.getMessage());

@@ -3,9 +3,9 @@ package ru.lakeevda.camundaapp.application.usecase;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.lakeevda.camundaapp.application.dto.UserCreateUseCaseRequest;
-import ru.lakeevda.camundaapp.application.dto.UserCreateUseCaseResponse;
-import ru.lakeevda.camundaapp.application.dto.UserGetUseCaseResponse;
+import ru.lakeevda.camundaapp.application.dto.UserUseCaseCreateRequest;
+import ru.lakeevda.camundaapp.application.dto.UserUseCaseCreateResponse;
+import ru.lakeevda.camundaapp.application.dto.UserUseCaseGetResponse;
 import ru.lakeevda.camundaapp.application.mapper.UserMapper;
 import ru.lakeevda.camundaapp.application.port.in.usecase.UserUseCase;
 import ru.lakeevda.camundaapp.application.port.out.repository.UserRepository;
@@ -21,7 +21,7 @@ public class UserUseCaseImpl implements UserUseCase {
     private final UserRepository userRepository;
 
     @Override
-    public UserGetUseCaseResponse getByEmail(String email) {
+    public UserUseCaseGetResponse getByEmail(String email) {
         if (email == null) {
             throw new IllegalArgumentException("email is null");
         }
@@ -32,7 +32,7 @@ public class UserUseCaseImpl implements UserUseCase {
     }
 
     @Override
-    public UserCreateUseCaseResponse create(UserCreateUseCaseRequest param) {
+    public UserUseCaseCreateResponse create(UserUseCaseCreateRequest param) {
         if (param == null) {
             throw new IllegalArgumentException("param is null");
         }

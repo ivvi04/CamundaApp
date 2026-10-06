@@ -1,8 +1,8 @@
 package ru.lakeevda.camundaapp.application.mapper;
 
-import ru.lakeevda.camundaapp.application.dto.TicketCreateUseCaseRequest;
-import ru.lakeevda.camundaapp.application.dto.TicketCreateUseCaseResponse;
-import ru.lakeevda.camundaapp.application.dto.TicketGetUseCaseResponse;
+import ru.lakeevda.camundaapp.application.dto.TicketUseCaseCreateRequest;
+import ru.lakeevda.camundaapp.application.dto.TicketUseCaseCreateResponse;
+import ru.lakeevda.camundaapp.application.dto.TicketUseCaseGetResponse;
 import ru.lakeevda.camundaapp.domain.entity.ticket.Ticket;
 import ru.lakeevda.camundaapp.domain.entity.ticket.TicketCreateAt;
 import ru.lakeevda.camundaapp.domain.entity.ticket.TicketName;
@@ -11,7 +11,7 @@ import ru.lakeevda.camundaapp.domain.entity.user.User;
 
 public class TicketMapper {
 
-    public static Ticket toDomain(TicketCreateUseCaseRequest param, User user) {
+    public static Ticket toDomain(TicketUseCaseCreateRequest param, User user) {
         return Ticket.create(
                 TicketName.of(param.name()),
                 TicketCreateAt.of(param.createAt()),
@@ -20,8 +20,8 @@ public class TicketMapper {
         );
     }
 
-    public static TicketCreateUseCaseResponse toCreateResponse(Ticket domain) {
-        return new TicketCreateUseCaseResponse(
+    public static TicketUseCaseCreateResponse toCreateResponse(Ticket domain) {
+        return new TicketUseCaseCreateResponse(
                 domain.getId().getValue(),
                 domain.getName().getValue(),
                 domain.getCreateAt().getValue(),
@@ -29,8 +29,8 @@ public class TicketMapper {
                 domain.getUser().getId().getValue());
     }
 
-    public static TicketGetUseCaseResponse toGetResponse(Ticket domain) {
-        return new TicketGetUseCaseResponse(
+    public static TicketUseCaseGetResponse toGetResponse(Ticket domain) {
+        return new TicketUseCaseGetResponse(
                 domain.getId().getValue(),
                 domain.getName().getValue(),
                 domain.getCreateAt().getValue(),

@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
-public record UserCreateControllerRequest(
+public record UserControllerCreateRequest(
         @NotNull(message = "fio is required")
         String fio,
 

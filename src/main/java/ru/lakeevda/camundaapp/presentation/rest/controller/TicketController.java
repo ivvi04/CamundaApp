@@ -2,15 +2,12 @@ package ru.lakeevda.camundaapp.presentation.rest.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import ru.lakeevda.camundaapp.application.dto.TicketStartProcessUseCaseResponse;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import ru.lakeevda.camundaapp.application.port.in.usecase.TicketUseCase;
-import ru.lakeevda.camundaapp.application.port.out.process.CamundaProcess;
-import ru.lakeevda.camundaapp.presentation.dto.TicketGetControllerResponse;
-import ru.lakeevda.camundaapp.presentation.dto.TicketStartProcessControllerRequest;
-import ru.lakeevda.camundaapp.presentation.dto.TicketStartProcessControllerResponse;
+import ru.lakeevda.camundaapp.presentation.dto.TicketControllerGetResponse;
 import ru.lakeevda.camundaapp.presentation.mapper.TicketMapper;
 
 import java.util.List;
@@ -21,20 +18,11 @@ import java.util.List;
 public class TicketController {
 
     private final TicketUseCase useCase;
-    private final CamundaProcess camundaProcess;
 
     @GetMapping
-    public List<TicketGetControllerResponse> getByUserId(@Valid @RequestParam Long userId) {
+    public List<TicketControllerGetResponse> getByUserId(@Valid @RequestParam Long userId) {
         return useCase.getByUserId(userId).stream()
                 .map(TicketMapper::toGetResponse)
                 .toList();
-    }
-
-    @PostMapping
-    public ResponseEntity<TicketStartProcessControllerResponse> start(@RequestBody TicketStartProcessControllerRequest ticketRequest) {
-        TicketStartProcessUseCaseResponse paramResponse = useCase.startProcess(ticketRequest.userId());
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(TicketMapper.toStartProcessResponse(paramResponse));
     }
 }

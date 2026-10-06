@@ -1,11 +1,11 @@
 package ru.lakeevda.camundaapp.application.port.in.usecase;
 
-import ru.lakeevda.camundaapp.application.dto.UserCreateUseCaseRequest;
-import ru.lakeevda.camundaapp.application.dto.UserCreateUseCaseResponse;
-import ru.lakeevda.camundaapp.application.dto.UserGetUseCaseResponse;
+import ru.lakeevda.camundaapp.application.dto.UserUseCaseCreateRequest;
+import ru.lakeevda.camundaapp.application.dto.UserUseCaseCreateResponse;
+import ru.lakeevda.camundaapp.application.dto.UserUseCaseGetResponse;
 
 public interface UserUseCase {
-    UserGetUseCaseResponse getByEmail(String email);
+    UserUseCaseGetResponse getByEmail(String email);
 
-    UserCreateUseCaseResponse create(UserCreateUseCaseRequest param);
+    UserUseCaseCreateResponse create(UserUseCaseCreateRequest param);
 }
