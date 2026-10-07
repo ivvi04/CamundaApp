@@ -10,7 +10,7 @@ import ru.lakeevda.camundaapp.application.dto.UserUseCaseCreateRequest;
 import ru.lakeevda.camundaapp.application.dto.UserUseCaseCreateResponse;
 import ru.lakeevda.camundaapp.application.dto.UserUseCaseGetResponse;
 import ru.lakeevda.camundaapp.application.port.out.repository.UserRepository;
-import ru.lakeevda.camundaapp.domain.entity.user.*;
+import ru.lakeevda.camundaapp.domain.model.user.*;
 
 import java.time.LocalDate;
 import java.util.Optional;

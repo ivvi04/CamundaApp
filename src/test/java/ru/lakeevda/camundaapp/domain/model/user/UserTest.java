@@ -1,7 +1,8 @@
-package ru.lakeevda.camundaapp.domain.entity.user;
+package ru.lakeevda.camundaapp.domain.model.user;
+
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
 
 public class UserTest {
 

@@ -3,10 +3,10 @@ package ru.lakeevda.camundaapp.application.mapper;
 import ru.lakeevda.camundaapp.application.dto.UserUseCaseCreateRequest;
 import ru.lakeevda.camundaapp.application.dto.UserUseCaseCreateResponse;
 import ru.lakeevda.camundaapp.application.dto.UserUseCaseGetResponse;
-import ru.lakeevda.camundaapp.domain.entity.user.User;
-import ru.lakeevda.camundaapp.domain.entity.user.UserBirthday;
-import ru.lakeevda.camundaapp.domain.entity.user.UserEmail;
-import ru.lakeevda.camundaapp.domain.entity.user.UserFio;
+import ru.lakeevda.camundaapp.domain.model.user.User;
+import ru.lakeevda.camundaapp.domain.model.user.UserBirthday;
+import ru.lakeevda.camundaapp.domain.model.user.UserEmail;
+import ru.lakeevda.camundaapp.domain.model.user.UserFio;
 
 public class UserMapper {
 

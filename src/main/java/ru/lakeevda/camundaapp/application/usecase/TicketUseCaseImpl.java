@@ -10,8 +10,8 @@ import ru.lakeevda.camundaapp.application.mapper.TicketMapper;
 import ru.lakeevda.camundaapp.application.port.in.usecase.TicketUseCase;
 import ru.lakeevda.camundaapp.application.port.out.repository.TicketRepository;
 import ru.lakeevda.camundaapp.application.port.out.repository.UserRepository;
-import ru.lakeevda.camundaapp.domain.entity.ticket.Ticket;
-import ru.lakeevda.camundaapp.domain.entity.user.User;
+import ru.lakeevda.camundaapp.domain.model.ticket.Ticket;
+import ru.lakeevda.camundaapp.domain.model.user.User;
 
 import java.util.List;
 

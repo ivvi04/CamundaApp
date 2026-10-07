@@ -1,4 +1,4 @@
-package ru.lakeevda.camundaapp.domain.entity.ticket;
+package ru.lakeevda.camundaapp.domain.model.ticket;
 
 import java.time.LocalDateTime;
 

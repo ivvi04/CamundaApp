@@ -1,6 +1,6 @@
 package ru.lakeevda.camundaapp.application.port.out.repository;
 
-import ru.lakeevda.camundaapp.domain.entity.user.User;
+import ru.lakeevda.camundaapp.domain.model.user.User;
 
 import java.util.Optional;
 

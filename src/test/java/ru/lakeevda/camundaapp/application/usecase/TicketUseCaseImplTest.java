@@ -10,8 +10,8 @@ import ru.lakeevda.camundaapp.application.dto.TicketUseCaseCreateResponse;
 import ru.lakeevda.camundaapp.application.dto.TicketUseCaseGetResponse;
 import ru.lakeevda.camundaapp.application.port.out.repository.TicketRepository;
 import ru.lakeevda.camundaapp.application.port.out.repository.UserRepository;
-import ru.lakeevda.camundaapp.domain.entity.ticket.*;
-import ru.lakeevda.camundaapp.domain.entity.user.*;
+import ru.lakeevda.camundaapp.domain.model.ticket.*;
+import ru.lakeevda.camundaapp.domain.model.user.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

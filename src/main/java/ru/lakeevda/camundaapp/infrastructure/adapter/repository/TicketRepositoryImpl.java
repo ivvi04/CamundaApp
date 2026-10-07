@@ -4,7 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ru.lakeevda.camundaapp.application.port.out.repository.TicketRepository;
-import ru.lakeevda.camundaapp.domain.entity.ticket.Ticket;
+import ru.lakeevda.camundaapp.domain.model.ticket.Ticket;
 import ru.lakeevda.camundaapp.infrastructure.persistence.entity.TicketEntity;
 import ru.lakeevda.camundaapp.infrastructure.persistence.mapper.TicketMapper;
 import ru.lakeevda.camundaapp.infrastructure.persistence.repository.TicketJpaRepository;

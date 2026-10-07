@@ -1,6 +1,6 @@
 package ru.lakeevda.camundaapp.application.port.out.repository;
 
-import ru.lakeevda.camundaapp.domain.entity.ticket.Ticket;
+import ru.lakeevda.camundaapp.domain.model.ticket.Ticket;
 
 import java.util.List;
 

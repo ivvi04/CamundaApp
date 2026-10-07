@@ -1,6 +1,6 @@
 package ru.lakeevda.camundaapp.infrastructure.persistence.mapper;
 
-import ru.lakeevda.camundaapp.domain.entity.user.*;
+import ru.lakeevda.camundaapp.domain.model.user.*;
 import ru.lakeevda.camundaapp.infrastructure.persistence.entity.UserEntity;
 
 public class UserMapper {

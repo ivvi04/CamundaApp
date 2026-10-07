@@ -9,10 +9,10 @@ import ru.lakeevda.camundaapp.application.dto.UserUseCaseGetResponse;
 import ru.lakeevda.camundaapp.application.mapper.UserMapper;
 import ru.lakeevda.camundaapp.application.port.in.usecase.UserUseCase;
 import ru.lakeevda.camundaapp.application.port.out.repository.UserRepository;
-import ru.lakeevda.camundaapp.domain.entity.user.User;
-import ru.lakeevda.camundaapp.domain.entity.user.UserBirthday;
-import ru.lakeevda.camundaapp.domain.entity.user.UserEmail;
-import ru.lakeevda.camundaapp.domain.entity.user.UserFio;
+import ru.lakeevda.camundaapp.domain.model.user.User;
+import ru.lakeevda.camundaapp.domain.model.user.UserBirthday;
+import ru.lakeevda.camundaapp.domain.model.user.UserEmail;
+import ru.lakeevda.camundaapp.domain.model.user.UserFio;
 
 @Service
 @RequiredArgsConstructor

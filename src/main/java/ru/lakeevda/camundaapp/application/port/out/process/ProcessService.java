@@ -11,9 +11,8 @@ public interface ProcessService {
     /**
      * Запускает процесс.
      *
-     * @param camundaStartProcessRequest ID BPMN-процесса
-     * @param variables переменные
-     * @return переменные processInstanceKey, bpmnProcessId, version
+     * @param camundaStartProcessRequest входные параметры старта BPMN-процесса
+     * @return выходные параметры старта BPMN-процесса
      */
     ProcessServiceStartResponse startProcess(ProcessServiceStartRequest camundaStartProcessRequest);
 }
