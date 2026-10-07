@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import ru.lakeevda.camundaapp.application.dto.TicketUseCaseCreateRequest;
 import ru.lakeevda.camundaapp.application.dto.TicketUseCaseCreateResponse;
 import ru.lakeevda.camundaapp.application.port.in.usecase.TicketUseCase;
-import ru.lakeevda.camundaapp.domain.entity.ticket.TicketStatus;
+import ru.lakeevda.camundaapp.domain.model.ticket.TicketStatus;
 import ru.lakeevda.camundaapp.infrastructure.dto.camunda.ticket.TicketWorkerCreateRequest;
 import ru.lakeevda.camundaapp.infrastructure.dto.camunda.ticket.TicketWorkerCreateResponse;
 

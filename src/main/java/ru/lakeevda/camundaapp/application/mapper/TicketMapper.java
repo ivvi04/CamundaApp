@@ -3,11 +3,11 @@ package ru.lakeevda.camundaapp.application.mapper;
 import ru.lakeevda.camundaapp.application.dto.TicketUseCaseCreateRequest;
 import ru.lakeevda.camundaapp.application.dto.TicketUseCaseCreateResponse;
 import ru.lakeevda.camundaapp.application.dto.TicketUseCaseGetResponse;
-import ru.lakeevda.camundaapp.domain.entity.ticket.Ticket;
-import ru.lakeevda.camundaapp.domain.entity.ticket.TicketCreateAt;
-import ru.lakeevda.camundaapp.domain.entity.ticket.TicketName;
-import ru.lakeevda.camundaapp.domain.entity.ticket.TicketStatus;
-import ru.lakeevda.camundaapp.domain.entity.user.User;
+import ru.lakeevda.camundaapp.domain.model.ticket.Ticket;
+import ru.lakeevda.camundaapp.domain.model.ticket.TicketCreateAt;
+import ru.lakeevda.camundaapp.domain.model.ticket.TicketName;
+import ru.lakeevda.camundaapp.domain.model.ticket.TicketStatus;
+import ru.lakeevda.camundaapp.domain.model.user.User;
 
 public class TicketMapper {
 

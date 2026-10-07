@@ -1,13 +1,9 @@
-package ru.lakeevda.camundaapp.domain.entity.ticket;
+package ru.lakeevda.camundaapp.domain.model.ticket;
+
+import org.junit.jupiter.api.Test;
+import ru.lakeevda.camundaapp.domain.model.user.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
-
-import ru.lakeevda.camundaapp.domain.entity.user.User;
-import ru.lakeevda.camundaapp.domain.entity.user.UserId;
-import ru.lakeevda.camundaapp.domain.entity.user.UserFio;
-import ru.lakeevda.camundaapp.domain.entity.user.UserBirthday;
-import ru.lakeevda.camundaapp.domain.entity.user.UserEmail;
 
 public class TicketTest {
 

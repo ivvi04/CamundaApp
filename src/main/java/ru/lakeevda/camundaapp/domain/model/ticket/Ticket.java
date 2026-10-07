@@ -1,6 +1,6 @@
-package ru.lakeevda.camundaapp.domain.entity.ticket;
+package ru.lakeevda.camundaapp.domain.model.ticket;
 
-import ru.lakeevda.camundaapp.domain.entity.user.User;
+import ru.lakeevda.camundaapp.domain.model.user.User;
 
 /**
  * Domain entity representing a ticket.

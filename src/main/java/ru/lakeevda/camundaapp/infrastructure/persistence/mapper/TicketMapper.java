@@ -1,6 +1,6 @@
 package ru.lakeevda.camundaapp.infrastructure.persistence.mapper;
 
-import ru.lakeevda.camundaapp.domain.entity.ticket.*;
+import ru.lakeevda.camundaapp.domain.model.ticket.*;
 import ru.lakeevda.camundaapp.infrastructure.persistence.entity.TicketEntity;
 
 public class TicketMapper {

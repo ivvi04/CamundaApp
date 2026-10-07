@@ -1,4 +1,4 @@
-package ru.lakeevda.camundaapp.domain.entity.user;
+package ru.lakeevda.camundaapp.domain.model.user;
 
 /**
  * Domain entity representing a user.

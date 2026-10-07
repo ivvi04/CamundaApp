@@ -4,7 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ru.lakeevda.camundaapp.application.port.out.repository.UserRepository;
-import ru.lakeevda.camundaapp.domain.entity.user.User;
+import ru.lakeevda.camundaapp.domain.model.user.User;
 import ru.lakeevda.camundaapp.infrastructure.persistence.entity.UserEntity;
 import ru.lakeevda.camundaapp.infrastructure.persistence.mapper.UserMapper;
 import ru.lakeevda.camundaapp.infrastructure.persistence.repository.UserJpaRepository;
