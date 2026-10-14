@@ -10,7 +10,7 @@ REST-контроллеров.
 
 - **Spring Boot 3.5.x** — быстрый старт, автоконфигурация, DevTools.
 - **Camunda 8 (Zeebe)** — интеграция через `camunda-spring-boot-starter` (версия 8.9.19).
-- **PostgreSQL 15** — база данных, подключаемая через Spring Data JPA.
+- **PostgreSQL 18** — база данных, подключаемая через Spring Data JPA.
 - **Liquibase** — миграции схемы.
 - **Lombok** — сокращение boilerplate-кода.
 - **JUnit 5 + Mockito + Testcontainers** — модульные и интеграционные тесты.
