@@ -3,43 +3,21 @@
 -- changeset Lakeev-DA:baseline-1
 CREATE TABLE IF NOT EXISTS camunda_app.users
 (
-    id        bigserial primary key         not null,
-    fio       text                          not null,
-    birthday  date                          not null
+    id          bigserial   not null primary key,
+    fio         text        not null,
+    birthday    date        not null
 );
 -- rollback DROP TABLE IF EXISTS camunda_app.users;
 
 -- changeset Lakeev-DA:baseline-2
 CREATE TABLE IF NOT EXISTS camunda_app.tickets
 (
-    id
-    bigserial
-    primary
-    key
-    not
-    null,
-    name
-    text
-    not
-    null,
-    create_at
-    timestamp
-    not
-    null,
-    status
-    varchar
-    not
-    null,
-    user_id
-    bigint
-    references
-    camunda_app
-    .
-    users
-(
-    id
-) not null
-);
+    id          bigserial   not null primary key,
+    name        text        not null,
+    create_at   timestamp   not null,
+    status      varchar     not null,
+    user_id     bigint      not null references camunda_app.users(id)
+    );
 -- rollback DROP TABLE IF EXISTS camunda_app.tickets;
 
 -- changeset Lakeev-DA:baseline-3
