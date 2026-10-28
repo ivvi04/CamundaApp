@@ -127,7 +127,7 @@ docker compose up --build
 
 ## Конфигурация
 
-Базовая конфигурация — `src/main/resources/application.properties` (локальный запуск: БД на `localhost:5434`,
+Базовая конфигурация — `src/main/resources/application.properties` (локальный запуск: БД на `localhost:5433`,
 Zeebe на `localhost:26500`/`localhost:8082`).
 
 При запуске через `docker-compose.yaml` адреса БД и Zeebe переопределяются переменными окружения контейнера
