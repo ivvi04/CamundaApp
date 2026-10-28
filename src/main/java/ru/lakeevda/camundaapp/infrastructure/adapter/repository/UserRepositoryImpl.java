@@ -1,8 +1,8 @@
 package ru.lakeevda.camundaapp.infrastructure.adapter.repository;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.lakeevda.camundaapp.application.port.out.repository.UserRepository;
 import ru.lakeevda.camundaapp.domain.model.user.User;
 import ru.lakeevda.camundaapp.infrastructure.persistence.entity.UserEntity;
@@ -18,12 +18,14 @@ public class UserRepositoryImpl implements UserRepository {
     private final UserJpaRepository jpaRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<User> findById(Long userId) {
         return jpaRepository.findById(userId)
                 .map(UserMapper::toDomain);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<User> findByEmail(String email) {
         return jpaRepository.findByEmail(email).map(UserMapper::toDomain);
     }

@@ -16,6 +16,9 @@ public enum TicketStatus {
     }
 
     public static TicketStatus fromValue(String value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Status must not be null");
+        }
         return Arrays.stream(TicketStatus.values())
                 .filter(t -> t.value.equals(value))
                 .findFirst()

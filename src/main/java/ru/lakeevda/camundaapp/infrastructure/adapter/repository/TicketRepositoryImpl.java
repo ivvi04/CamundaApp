@@ -1,8 +1,8 @@
 package ru.lakeevda.camundaapp.infrastructure.adapter.repository;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.lakeevda.camundaapp.application.port.out.repository.TicketRepository;
 import ru.lakeevda.camundaapp.domain.model.ticket.Ticket;
 import ru.lakeevda.camundaapp.infrastructure.persistence.entity.TicketEntity;
@@ -16,7 +16,13 @@ import java.util.List;
 public class TicketRepositoryImpl implements TicketRepository {
     private final TicketJpaRepository jpaRepository;
 
+    /**
+     * Маппинг выполняется внутри транзакции, поэтому ленивая связь user
+     * доступна без Open Session in View. Дополнительно связь загружается
+     * через EntityGraph в репозитории, чтобы не было N+1.
+     */
     @Override
+    @Transactional(readOnly = true)
     public List<Ticket> findByUserId(Long userId) {
         return jpaRepository.findAllByUserId(userId)
                 .stream().map(TicketMapper::toDomain)
@@ -28,6 +34,11 @@ public class TicketRepositoryImpl implements TicketRepository {
     public Ticket save(Ticket ticket) {
         TicketEntity entity = jpaRepository.save(TicketMapper.toEntity(ticket));
         return TicketMapper.toDomain(entity);
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return jpaRepository.existsById(id);
     }
 
     @Override

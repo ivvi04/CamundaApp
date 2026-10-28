@@ -3,10 +3,8 @@ package ru.lakeevda.camundaapp.presentation.rest.controller;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 import ru.lakeevda.camundaapp.application.port.in.usecase.TicketUseCase;
 import ru.lakeevda.camundaapp.presentation.dto.TicketControllerGetResponse;
 import ru.lakeevda.camundaapp.presentation.mapper.TicketMapper;
@@ -25,5 +23,11 @@ public class TicketController {
         return useCase.getByUserId(userId).stream()
                 .map(TicketMapper::toGetResponse)
                 .toList();
+    }
+
+    @DeleteMapping("/{ticketId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable @NotNull @Min(value = 1, message = "ticketId must be positive") Long ticketId) {
+        useCase.delete(ticketId);
     }
 }

@@ -1,5 +1,6 @@
 package ru.lakeevda.camundaapp.infrastructure.persistence.repository;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -9,6 +10,7 @@ import java.util.List;
 
 public interface TicketJpaRepository extends JpaRepository<TicketEntity, Long> {
 
+    @EntityGraph(attributePaths = "user")
     @Query(value = "select t from TicketEntity t " +
             "where t.user.id = :userId")
     List<TicketEntity> findAllByUserId(@Param("userId") Long userId);

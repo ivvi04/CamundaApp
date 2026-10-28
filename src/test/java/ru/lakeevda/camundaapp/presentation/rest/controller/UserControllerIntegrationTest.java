@@ -100,6 +100,42 @@ class UserControllerIntegrationTest {
     }
 
     @Test
+    void create_user_withMalformedJson_returns400() throws Exception {
+        // Given — тело запроса не является корректным JSON
+        String request = "{not a json";
+
+        // When & Then
+        mockMvc.perform(post(USERS_URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void create_user_withDuplicateEmail_returns409() throws Exception {
+        // Given — пользователь с таким email уже существует
+        String email = "duplicate_" + UUID.randomUUID() + "@example.com";
+        userUseCase.create(new UserUseCaseCreateRequest(
+                "First User",
+                LocalDate.of(1990, 1, 1),
+                email
+        ));
+
+        var request = new UserControllerCreateRequest(
+                "Second User",
+                LocalDate.of(1991, 2, 2),
+                email
+        );
+        String requestJson = objectMapper.writeValueAsString(request);
+
+        // When & Then
+        mockMvc.perform(post(USERS_URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isConflict());
+    }
+
+    @Test
     void getByEmail_returns200WithUser() throws Exception {
         // Given — пользователь создан в БД через реальный UseCase
         String email = "test_" + UUID.randomUUID() + "@example.com";

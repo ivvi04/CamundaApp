@@ -11,7 +11,7 @@ public final class UserEmail {
     }
 
     public static UserEmail of(String value) {
-        if (value == null || !value.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
+        if (value == null || !value.trim().matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
             throw new IllegalArgumentException("Invalid email format");
         }
         return new UserEmail(value.trim());

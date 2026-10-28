@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -101,5 +102,34 @@ class TicketControllerIntegrationTest {
         // When & Then
         mockMvc.perform(get(TICKETS_URL))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void delete_returns204AndRemovesTicket() throws Exception {
+        // Given — у пользователя есть один тикет
+        var created = ticketUseCase.create(new TicketUseCaseCreateRequest(
+                "Ticket to delete",
+                LocalDateTime.now(),
+                "created",
+                userId
+        ));
+
+        // When & Then
+        mockMvc.perform(delete(TICKETS_URL + "/" + created.id()))
+                .andExpect(status().isNoContent());
+
+        mockMvc.perform(get(TICKETS_URL)
+                        .param("userId", String.valueOf(userId)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isEmpty());
+    }
+
+    @Test
+    void delete_withUnknownId_returns404() throws Exception {
+        // Given — тикета с таким ID не существует
+
+        // When & Then
+        mockMvc.perform(delete(TICKETS_URL + "/" + Long.MAX_VALUE))
+                .andExpect(status().isNotFound());
     }
 }

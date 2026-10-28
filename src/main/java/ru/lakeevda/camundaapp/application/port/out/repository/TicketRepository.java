@@ -8,5 +8,8 @@ public interface TicketRepository {
     List<Ticket> findByUserId(Long userId);
 
     Ticket save(Ticket ticket);
+
+    boolean existsById(Long id);
+
     void delete(Long id);
 }

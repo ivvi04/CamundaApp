@@ -8,6 +8,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ru.lakeevda.camundaapp.application.dto.TicketUseCaseCreateRequest;
 import ru.lakeevda.camundaapp.application.dto.TicketUseCaseCreateResponse;
 import ru.lakeevda.camundaapp.application.dto.TicketUseCaseGetResponse;
+import ru.lakeevda.camundaapp.application.exception.NotFoundException;
 import ru.lakeevda.camundaapp.application.port.out.repository.TicketRepository;
 import ru.lakeevda.camundaapp.application.port.out.repository.UserRepository;
 import ru.lakeevda.camundaapp.domain.model.ticket.*;
@@ -19,8 +20,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -98,14 +98,29 @@ class TicketUseCaseImplTest {
 
     @Test
     void delete_success() {
-        // Given — тикет с ID 1 будет удалён
+        // Given — тикет с ID 1 существует и будет удалён
         Long ticketId = 1L;
+        when(ticketRepository.existsById(ticketId)).thenReturn(true);
         doNothing().when(ticketRepository).delete(ticketId);
 
         // When
         ticketUseCase.delete(ticketId);
 
         // Then
+        verify(ticketRepository).existsById(ticketId);
         verify(ticketRepository).delete(ticketId);
+    }
+
+    @Test
+    void delete_throwsWhenTicketNotFound() {
+        // Given — тикета с таким ID нет
+        Long ticketId = 42L;
+        when(ticketRepository.existsById(ticketId)).thenReturn(false);
+
+        // When / Then
+        assertThrows(NotFoundException.class, () -> ticketUseCase.delete(ticketId));
+
+        verify(ticketRepository).existsById(ticketId);
+        verify(ticketRepository, never()).delete(ticketId);
     }
 }

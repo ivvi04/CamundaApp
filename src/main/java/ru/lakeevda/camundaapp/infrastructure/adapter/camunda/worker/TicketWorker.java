@@ -4,12 +4,12 @@ import io.camunda.client.annotation.JobWorker;
 import io.camunda.client.annotation.Variable;
 import io.camunda.client.annotation.VariablesAsType;
 import io.camunda.client.exception.BpmnError;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.lakeevda.camundaapp.application.dto.TicketUseCaseCreateRequest;
 import ru.lakeevda.camundaapp.application.dto.TicketUseCaseCreateResponse;
+import ru.lakeevda.camundaapp.application.exception.NotFoundException;
 import ru.lakeevda.camundaapp.application.port.in.usecase.TicketUseCase;
 import ru.lakeevda.camundaapp.domain.model.ticket.TicketStatus;
 import ru.lakeevda.camundaapp.infrastructure.dto.camunda.ticket.TicketWorkerCreateRequest;
@@ -22,7 +22,8 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class TicketWorker {
 
-    private static final long MILLIS = 60001L;
+    /** Искусственная задержка обработки задачи ticketCheckJob (мс). */
+    private static final long CHECK_DELAY_MS = 60_001L;
 
     private final TicketUseCase useCase;
 
@@ -37,7 +38,7 @@ public class TicketWorker {
         try {
             TicketUseCaseCreateResponse paramResponse = useCase.create(paramRequest);
             return new TicketWorkerCreateResponse(paramResponse.id());
-        } catch (EntityNotFoundException e) {
+        } catch (NotFoundException e) {
             log.warn("Throwing BpmnError BUSINESS_ERROR: {}", e.getMessage());
             throw new BpmnError("BUSINESS_ERROR", e.getMessage());
         }
@@ -46,9 +47,10 @@ public class TicketWorker {
     @JobWorker(type = "ticketCheckJob")
     public void check(@Variable("ticketId") String ticketId) throws InterruptedException {
         log.info("ticketCheckJob {}", ticketId);
-        if (Integer.parseInt(ticketId) % 2 == 0) {
+        long parsedTicketId = Long.parseLong(ticketId);
+        if (parsedTicketId % 2 == 0) {
             log.info("ticketCheckJob {} sleep", ticketId);
-            Thread.sleep(MILLIS);
+            Thread.sleep(CHECK_DELAY_MS);
         }
     }
 }

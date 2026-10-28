@@ -85,6 +85,12 @@ src/test/java/ru/lakeevda/camundaapp/  — тесты (дублируют стр
 ./mvnw clean package
 ```
 
+Для локального запуска без Docker создайте схему БД — Liquibase не создаёт её автоматически:
+
+```sql
+CREATE SCHEMA IF NOT EXISTS camunda_app;
+```
+
 ### Docker Compose
 
 В корне проекта находится `docker-compose.yaml`, который запускает:
@@ -107,35 +113,40 @@ docker compose up --build
 ./mvnw test
 ```
 
-Модульные тесты используют **Mockito** для изоляции бизнес-логики от внешних зависимостей (БД, Camunda). Покрывают use
-case'и и контроллеры.
+Модульные тесты используют **Mockito** для изоляции бизнес-логики от внешних зависимостей (БД, Camunda). Покрывают
+домен, use case'и и адаптеры репозиториев.
 
 ### Интеграционные
 
 ```bash
-./mvnw verify -Pintegration-tests
+./mvnw verify
 ```
 
-Интеграционные тесты запускаются через **Testcontainers** и проверяют взаимодействие с PostgreSQL и Camunda 8.
+Интеграционные тесты (`*IntegrationTest`) запускаются на фазе `verify` через **Testcontainers** и проверяют
+взаимодействие с PostgreSQL и Camunda 8. Для их запуска нужен Docker.
 
 ## Конфигурация
 
-Файлы конфигурации находятся в `src/main/resources`:
+Базовая конфигурация — `src/main/resources/application.properties` (локальный запуск: БД на `localhost:5434`,
+Zeebe на `localhost:26500`/`localhost:8082`).
 
-- `application.properties` — общая конфигурация Spring.
-- `application-docker.properties` — настройки для Docker-среды (путь к БД, адрес Zeebe).
+При запуске через `docker-compose.yaml` адреса БД и Zeebe переопределяются переменными окружения контейнера
+`camunda-app`: `SPRING_DATASOURCE_URL`, `CAMUNDA_GRPC_ADDRESS`, `CAMUNDA_REST_ADDRESS`. Отдельный профиль не используется.
 
-Для запуска с Docker-профилем:
-
-```bash
-./mvnw spring-boot:run -Dspring.profiles.active=docker
-```
+Схема `camunda_app` создаётся при первой инициализации контейнера `postgres` (скрипт
+`db/changelog/baseline/init/init.sql`) и задана как схема по умолчанию через `search_path`.
 
 ## BPMN-процессы
 
 Процессы размещены в `src/main/resources/processes/bpmn`. В примере есть процесс `createTicketProcess.bpmn`, который
 демонстрирует создание тикета через Camunda 8.
 
-## Лицензия
+## REST API
 
-MIT License — см. файл `LICENSE`.
+| Метод    | Путь                      | Назначение                                  |
+|----------|---------------------------|---------------------------------------------|
+| `GET`    | `/api/users?email=...`    | Получить пользователя по email              |
+| `POST`   | `/api/users`              | Создать пользователя                        |
+| `GET`    | `/api/tickets?userId=...` | Получить тикеты пользователя                |
+| `DELETE` | `/api/tickets/{ticketId}` | Удалить тикет                               |
+| `POST`   | `/api/process/start`      | Запустить BPMN-процесс по `processId`       |

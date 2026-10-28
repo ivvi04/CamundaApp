@@ -23,3 +23,7 @@ CREATE TABLE IF NOT EXISTS camunda_app.tickets
 -- changeset Lakeev-DA:baseline-3
 ALTER TABLE IF EXISTS camunda_app.users ADD COLUMN IF NOT EXISTS email text UNIQUE;
 -- rollback ALTER TABLE IF EXISTS camunda_app.users DROP COLUMN IF EXISTS email;
+
+-- changeset Lakeev-DA:baseline-4
+CREATE INDEX idx_tickets_user_id ON camunda_app.tickets (user_id);
+-- rollback DROP INDEX IF EXISTS camunda_app.idx_tickets_user_id;

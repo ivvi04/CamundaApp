@@ -13,7 +13,7 @@ import ru.lakeevda.camundaapp.application.dto.ProcessServiceStartResponse;
 import ru.lakeevda.camundaapp.application.port.out.process.ProcessService;
 import ru.lakeevda.camundaapp.presentation.dto.ProcessControllerStartRequest;
 import ru.lakeevda.camundaapp.presentation.dto.ProcessControllerStartResponse;
-import ru.lakeevda.camundaapp.presentation.mapper.TicketMapper;
+import ru.lakeevda.camundaapp.presentation.mapper.ProcessMapper;
 
 @RestController
 @RequestMapping("/api/process")
@@ -28,6 +28,6 @@ public class CamundaController {
                 .startProcess(new ProcessServiceStartRequest(request.processId(), request.variables()));
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(TicketMapper.toStartProcessResponse(paramResponse));
+                .body(ProcessMapper.toStartProcessResponse(paramResponse));
     }
 }

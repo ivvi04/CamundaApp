@@ -8,6 +8,7 @@ import ru.lakeevda.camundaapp.application.dto.ProcessServiceStartRequest;
 import ru.lakeevda.camundaapp.application.dto.ProcessServiceStartResponse;
 import ru.lakeevda.camundaapp.application.port.out.process.ProcessService;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
@@ -15,7 +16,11 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CamundaProcessServiceImpl implements ProcessService {
 
-    private final Map<String, Object> MAIN_VARIABLES = Map.of(
+    /**
+     * Технические переменные процесса, которые подставляются по умолчанию.
+     * Значения из запроса могут их переопределить.
+     */
+    private static final Map<String, Object> DEFAULT_VARIABLES = Map.of(
             "timeoutDuration", "PT1M"
     );
 
@@ -25,8 +30,10 @@ public class CamundaProcessServiceImpl implements ProcessService {
     public ProcessServiceStartResponse startProcess(ProcessServiceStartRequest startRequest) {
         log.info("Starting createTicketProcess: processId={}, variables={}", startRequest.processId(), startRequest.variables());
 
-        var variables = startRequest.variables();
-        variables.putAll(MAIN_VARIABLES);
+        var variables = new HashMap<>(DEFAULT_VARIABLES);
+        if (startRequest.variables() != null) {
+            variables.putAll(startRequest.variables());
+        }
 
         // Запуск экземпляра процесса
         var response = camundaClient

@@ -1,6 +1,5 @@
 package ru.lakeevda.camundaapp.application.usecase;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -9,6 +8,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ru.lakeevda.camundaapp.application.dto.UserUseCaseCreateRequest;
 import ru.lakeevda.camundaapp.application.dto.UserUseCaseCreateResponse;
 import ru.lakeevda.camundaapp.application.dto.UserUseCaseGetResponse;
+import ru.lakeevda.camundaapp.application.exception.NotFoundException;
 import ru.lakeevda.camundaapp.application.port.out.repository.UserRepository;
 import ru.lakeevda.camundaapp.domain.model.user.*;
 
@@ -59,7 +59,7 @@ class UserUseCaseImplTest {
         when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
 
         // When / Then
-        assertThrows(EntityNotFoundException.class, () -> userUseCase.getByEmail(email));
+        assertThrows(NotFoundException.class, () -> userUseCase.getByEmail(email));
 
         verify(userRepository).findByEmail(email);
     }
