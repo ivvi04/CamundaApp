@@ -2,5 +2,6 @@ target/
 .git/
 .idea/
 .ai/
+.env
 *.iml
 .mvn/wrapper/maven-wrapper.jar

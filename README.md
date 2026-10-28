@@ -91,6 +91,8 @@ src/test/java/ru/lakeevda/camundaapp/  — тесты (дублируют стр
 CREATE SCHEMA IF NOT EXISTS camunda_app;
 ```
 
+и скопируйте `.env.example` → `.env` (см. раздел «Конфигурация»).
+
 ### Docker Compose
 
 В корне проекта находится `docker-compose.yaml`, который запускает:
@@ -127,14 +129,27 @@ docker compose up --build
 
 ## Конфигурация
 
-Базовая конфигурация — `src/main/resources/application.properties` (локальный запуск: БД на `localhost:5433`,
-Zeebe на `localhost:26500`/`localhost:8082`).
+Все секреты и адреса хранятся в `.env` (в git не попадает); в `application.properties` и `docker-compose.yaml`
+значений по умолчанию нет. Перечень переменных — в шаблоне `.env.example`.
 
-При запуске через `docker-compose.yaml` адреса БД и Zeebe переопределяются переменными окружения контейнера
-`camunda-app`: `SPRING_DATASOURCE_URL`, `CAMUNDA_GRPC_ADDRESS`, `CAMUNDA_REST_ADDRESS`. Отдельный профиль не используется.
+Перед первым запуском скопируйте шаблон и заполните значения:
 
-Схема `camunda_app` создаётся при первой инициализации контейнера `postgres` (скрипт
-`db/changelog/baseline/init/init.sql`) и задана как схема по умолчанию через `search_path`.
+```bash
+cp .env.example .env
+```
+
+`.env` читают **оба**:
+
+- **Docker Compose** — автоматически из корня проекта; на хосте PostgreSQL публикуется на `POSTGRES_PORT` (`5433`),
+  внутри docker-сети приложение и Camunda ходят на `postgres:5432`;
+- **Spring** — через `spring.config.import=optional:file:./.env[.properties]`, поэтому локальный запуск работает
+  без экспорта переменных: БД на `localhost:5432`, Zeebe на `localhost:26500` и `localhost:8082`.
+
+В контейнере `.env` нет (исключён `.dockerignore`); compose передаёт нужные переменные через `environment` —
+они перекрывают значения из файла.
+
+Схема `camunda_app` создаётся при первой инициализации контейнера `postgres` скриптом
+`db/changelog/baseline/init/init.sql`. При локальном запуске создайте её вручную (см. раздел «Maven»).
 
 ## BPMN-процессы
 
